@@ -83,6 +83,7 @@ $(function(){
 		    		power('1-10',rs.k3.t_stockbill_auth)
 		    		power('1-11',rs.k3.t_cancel_auth)
 		    		power('1-12',rs.k3.t_icsearch_auth)
+		    		power('1-13',rs.k3.t_fnumber_auth)
 		    	}
 		    	if (rs.icmo==null){
 
@@ -100,9 +101,13 @@ $(function(){
 		    		power('1-4-1',rs.reject.create_auth)
 		    		power('1-4-2',rs.reject.delete_auth)
 		    		power('1-4-3',rs.reject.dept_auth)
-		    		power('1-4-4',rs.reject.fz_auth)
-		    		power('1-4-5',rs.reject.cgy_auth)
-		    		power('1-4-6',rs.reject.export_auth)
+		    		power('1-4-4',rs.reject.me_auth)
+		    		power('1-4-5',rs.reject.pz_auth)
+		    		power('1-4-6',rs.reject.sg_auth)
+		    		power('1-4-7',rs.reject.cw_auth)
+		    		power('1-4-8',rs.reject.fz_auth)
+		    		power('1-4-9',rs.reject.cgy_auth)
+		    		power('1-4-10',rs.reject.export_auth)
 		    	}
 		    	if (rs.receive==null){
 

@@ -86,6 +86,7 @@ $(function(){
       "ordering": true,
       "info": true,
       "autoWidth": false,
+      "scrollX": true,
       initComplete: function() {
         var total = 0.0;
         var table = document .getElementById ("example")
@@ -96,6 +97,7 @@ $(function(){
         document .getElementById ("total").value=total.toFixed(2)
         // alert(total.toFixed(2))
       }, 
+      "oLanguage": language, 
       // "scrollX": true,
       'ajax': {
         'url':ip+"receive/search",
