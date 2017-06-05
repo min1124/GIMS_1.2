@@ -755,55 +755,59 @@ function bfjeCell(nTd, sData, oData, index) { //计算颜色
 }
 
 function initComplete(){ //初始化表格
-  var dataPlugin1 = '<div id="dataPlugin1" class=" pull-left dateRange"> '+
-                      '<span>单据状态：</span>'+
-                      '<select id="djzt" name="djzt" class="form-control" style="display:inline;width: 140px;height: 100%">'+
-                        '<option value="all"></option>'+
-                        '<optgroup label="待部门负责人审批">'+
-                          '<option value="模块">模块</option>'+
-                          '<option value="器件">器件</option>'+
-                          '<option value="TO">TO</option>'+
-                          '<option value="管芯">管芯</option>'+
-                          '<option value="仓库">仓库</option>'+
-                        '</optgroup>'+
-                        '<option value="待ME负责人审批">待ME负责人审批</option>'+
-                        '<option value="待品质负责人审批">待品质负责人审批</option>'+
-                        '<option value="待生管负责人审批">待生管负责人审批</option>'+
-                        '<option value="待财务负责人审批">待财务负责人审批</option>'+
-                        '<option value="待分管副总审批">待分管副总审批</option>'+
-                        '<option value="待仓管员确认">待仓管员确认</option>'+
-                        '<option value="已审核完成">已审核完成</option>'+
-                        '<option value="已终止">已终止</option>'+
-                      '</select>'+
+  var dataPlugin1 = '<div id="dataPlugin1" class="btn-group pull-left" role="group" aria-label="..." style="width: 75%;">'+
+                      '<table id="exampleQuery" class="table table-bordered " style="table-layout:fixed;">'+
+                        '<thead>'+
+                          '<tr>'+
+                            '<th style="width: 27%;">单据状态：</th>'+
+                            '<th style="width: 17%;">报废金额：</th>'+
+                            '<th style="width: 28%;">开始时间：</th>'+
+                            '<th style="width: 28%;">结束时间：</th>'+
+                            // '<th style="width: 10%;"></th>'+
+                          '</tr>'+
+                          '<tr>'+
+                            '<th>'+
+                              '<select id="djzt" name="djzt" class="form-control" style="display:inline;width: 140px;height: 100%">'+
+                                '<option value="all"></option>'+
+                                '<optgroup label="待部门负责人审批">'+
+                                  '<option value="模块">模块</option>'+
+                                  '<option value="器件">器件</option>'+
+                                  '<option value="TO">TO</option>'+
+                                  '<option value="管芯">管芯</option>'+
+                                  '<option value="仓库">仓库</option>'+
+                                '</optgroup>'+
+                                '<option value="待ME负责人审批">待ME负责人审批</option>'+
+                                '<option value="待品质负责人审批">待品质负责人审批</option>'+
+                                '<option value="待生管负责人审批">待生管负责人审批</option>'+
+                                '<option value="待财务负责人审批">待财务负责人审批</option>'+
+                                '<option value="待分管副总审批">待分管副总审批</option>'+
+                                '<option value="待仓管员确认">待仓管员确认</option>'+
+                                '<option value="已审核完成">已审核完成</option>'+
+                                '<option value="已终止">已终止</option>'+
+                              '</select>'+
+                            '</th>'+
+                            '<th>'+
+                              '<select id="bfjecx" name="bfjecx" class="form-control" style="display:inline;width: 80px;height: 100%">'+
+                                '<option value="all"></option>'+
+                                '<option value="<=3000"><=3000</option>'+
+                                '<option value=">3000">>3000</option>'+
+                              '</select>'+
+                            '</th>'+
+                            '<th><input type="date" id="starttime"></th>'+
+                            '<th><input type="date" id="endtime"></th>'+
+                            // '<th><button type="button" class="btn btn-default" id="true">确定</button></th>'+
+                          '</tr>'+
+                          '<tr>'+
+                            '<th colspan="4">'+
+                              '<button type="button" class="btn btn-default" id="add">增加</button>'+
+                              '<button type="button" class="btn btn-default" id="delete">删除</button>'+
+                              '<button type="button" class="btn btn-default" id="plsh">批量审核</button>'+
+                            '</th>'+
+                          '</tr>'+
+                        '</thead>'+
+                      '</table>'+
                     '</div>'
-  var dataPlugin2 = '<div id="dataPlugin2" class=" pull-left dateRange"> '+
-                      '<span>报废金额：</span>'+
-                      '<select id="bfjecx" name="bfjecx" class="form-control" style="display:inline;width: 80px;height: 100%">'+
-                        '<option value="all"></option>'+
-                        '<option value="<=3000"><=3000</option>'+
-                        '<option value=">3000">>3000</option>'+
-                      '</select>'+
-                    '</div>'
-  var dataPlugin3 = '<div id="time" class=" pull-left dateRange"> '+
-                        '<span>开始时间：</span>'+
-                        '<input type="date" id="starttime">'+
-                        '<span> ——结束时间：</span>'+
-                        '<input type="date" id="endtime">'+
-                    '</div>'
-  var dataPlugin4 = '<div id="dataPlugin4" class="btn-group pull-left" role="group" aria-label="...">'+
-                      '<button type="button" class="btn btn-default" id="true">确定</button>'+
-                      '<button type="button" class="btn btn-default" id="add">增加</button>'+
-                      '<button type="button" class="btn btn-default" id="delete">删除</button>'+
-                      '<button type="button" class="btn btn-default" id="plsh">批量审核</button>'+
-                    '</div>'
-  $('.clear').append(dataPlugin1);
-  $('.clear').append(dataPlugin2); 
-  $('.clear').append(dataPlugin3);
-  $('.clear').append(dataPlugin4);
-  
-  $('#dataPlugin2').css("margin-left","10px");
-  $('#time').css("margin-left","10px"); 
-  $('#dataPlugin4').css("margin-left","20px"); 
+  $('.clear').append(dataPlugin1); 
 
   $(document).on("change","#djzt",function(){//单据状态下拉选项
     table.ajax.reload();
@@ -813,7 +817,15 @@ function initComplete(){ //初始化表格
     table.ajax.reload();
   });
 
-  $('#true').click(function(){
+  $(document).on("change","#starttime",function(){//开始时间下拉选项
     table.ajax.reload();
   });
+
+  $(document).on("change","#endtime",function(){//结束时间下拉选项
+    table.ajax.reload();
+  });
+
+  // $('#true').click(function(){
+  //   table.ajax.reload();
+  // });
 }

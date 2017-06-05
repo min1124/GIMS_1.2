@@ -44,27 +44,33 @@ $(function(){
     	]
     });
 });
-function doUpload() {  
+function doUpload() {//上传文件函数
     var formData = new FormData($( "#uploadForm" )[0]);  
-    $.ajax({  
-        url: ip+'bfprice/upload' ,  
-        type: 'POST',  
-        data: formData,
-        async: false,  
-        cache: false,  
-        contentType: false,  
-        processData: false,  
-        success: function (rs) {  
-            table.ajax.reload();
-            alert(rs);  
-        },  
-        error: function (rs) {  
-           if (rs.status == 403){
-            alert("文件类型不匹配")
-           }else{
-            error(rs)
-           }
-        }  
-    });   //  //上传文件函数
+    var token = getCookie('token');
+    var name = getCookie('name');
+    if("李永青"==name){
+        $.ajax({  
+            url: ip+'bfprice/upload' ,  
+            type: 'POST',  
+            data: formData,
+            async: false,  
+            cache: false,  
+            contentType: false,  
+            processData: false,  
+            success: function (rs) {  
+                table.ajax.reload();
+                alert(rs);  
+            },  
+            error: function (rs) {  
+                if (rs.status == 403){
+                    alert("文件类型不匹配")
+                }else{
+                    error(rs)
+                }
+            }  
+        });   
+    }else{
+        alert("您没有上传权限！");
+    }   
 }  
 
