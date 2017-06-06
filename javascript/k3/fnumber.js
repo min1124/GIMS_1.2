@@ -1,9 +1,9 @@
 var table
 jQuery.support.cors = true;
 $(function () {
-var token = getCookie('token');
-var name = getCookie('name');
-table=$('#example').DataTable({
+  var token = getCookie('token');
+  var name = getCookie('name');
+  table=$('#example').DataTable({
     "bDestroy":true,
     "paging": true,
     "lengthChange": false,
@@ -11,7 +11,7 @@ table=$('#example').DataTable({
     "ordering": true,
     "info": true,
     "autoWidth": false,
-    "scrollX": true,
+    "scrollX": true,  
     initComplete:initComplete,
     "dom": 'T<"clear">lfrtip',
     "tableTools": {
@@ -48,8 +48,11 @@ table=$('#example').DataTable({
       { "data": "update_date" },
       { "data": "F11" },
     ]
-    });
-
+  });
+  new $.fn.dataTable.FixedColumns( table, {
+    leftColumns: 4,
+  } );
+    
 	$(document).on("click","#add",function(){  //增加按钮显示新增模态框
       $('#myModal').modal('show')  
     });
