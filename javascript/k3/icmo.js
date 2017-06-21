@@ -37,6 +37,7 @@
              d.zzdh=$('#zzdh1').val();
              d.starttime = $('#starttime').val();
              d.endtime = $('#endtime').val();
+             d.sccjSel = $('#sccjSel').val();
              d.type = type;
         },  
         'type': 'POST',
@@ -51,6 +52,7 @@
         }  
       }, 
       "aoColumns": [
+        { "data": "配料时间" },
         { "data": "制造单号" },
         { "data": "产品代码" },
         { "data": "生产车间" },
@@ -60,7 +62,7 @@
         { "data": "产品要求" },
         // { "data": "产品规格" },
         { "data": "制单人" },
-        { "data": "包装要求" },
+        // { "data": "包装要求" },
         { "data": "批号" },
         { "data": "工程师" },
         { "data": "品质工程师" },
@@ -276,7 +278,7 @@
   })
   $(document).on("dblclick","#example tbody tr",function() {
     
-      var a=$(this).children('td').eq(0).text();
+      var a=$(this).children('td').eq(1).text();
       form(a)
     
   });
@@ -414,14 +416,34 @@ function initComplete(){ //初始化表格
   var dataPlugin2 ='<div id="time" class=" pull-left dateRange"> '+
                   '<span>开始时间：</span><input type="date" id="starttime"> ——<span>结束时间：</span><input type="date" id="endtime">'+
                   '</div>';
+  var dataPlugin3 = '<div id="sccjDiv" class=" pull-left dateRange"> '+
+                      '<span>生产车间：</span>'+
+                      '<select id="sccjSel" name="sccjSel" class="form-control" style="display:inline;width: 120px;height: 100%">'+
+                        '<option value="all">全部</option>'+
+                        '<option value="ME车间">ME车间</option>'+
+                        '<option value="TO生产部">TO生产部</option>'+
+                        '<option value="管芯生产部">管芯生产部</option>'+
+                        '<option value="模块生产一部">模块生产一部</option>'+
+                        '<option value="器件生产一部">器件生产一部</option>'+
+                        '<option value="研发车间(正源)">研发车间(正源)</option>'+
+                        '<option value="子系统BOB车间">子系统BOB车间</option>'+
+                      '</select>'+
+                    '</div>';
   // $('#mytoolbox1').append(dataPlugin1); 
   $('.clear').append(dataPlugin1);          
   $('.clear').append(dataPlugin2);
+  $('.clear').append(dataPlugin3);
   
   $('#time').css("margin-left","20px"); 
+  $('#sccjDiv').css("margin-left","20px");
   $('#search').click(function(){
     table.ajax.reload();
   });
+
+  $(document).on("change","#sccjSel",function(){//单据状态下拉选项
+    table.ajax.reload();
+  });
+
 }
 function review(stype,token,name){//任务单审核
   var a=$("#zzdh").val()
@@ -620,7 +642,8 @@ function form(sql){//弹出model
         $("#ph").val(rs.data[0].批号)//批号赋值
         $("#cpyq").val(rs.data[0].产品要求)//产品要求赋值
         $("#kh").val(rs.data[0].客户)//客户赋值
-        $("#bzyq").val(rs.data[0].包装要求)//包装要求赋值
+        // $("#bzyq").val(rs.data[0].包装要求)//包装要求赋值
+        $("#plsj").val(rs.data[0].配料时间)//配料时间赋值
         $("#zdr").val(rs.data[0].制单人)//制单人赋值
         $("#gcs").val(rs.data[0].工程师)//制单人赋值
         $("#pzgcs").val(rs.data[0].品质工程师)//制单人赋值-----------------
