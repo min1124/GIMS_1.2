@@ -112,7 +112,7 @@ $(function () {
       ]
 
     });
-     $('#example tbody').on('click', 'tr', function (){//选中某行
+    $('#example tbody').on('click', 'tr', function (){//选中某行
         $('.selected').toggleClass('selected');
         $(this).toggleClass('selected');
     });
@@ -309,6 +309,8 @@ $(function () {
               dept:$('#bmbz1').val(),
             }
             reject(data);
+          }else{
+            alert("已审核完成，不能再次审核！");
           }
         }else{
           alert("已终止，不能审核！");
@@ -389,6 +391,8 @@ $(function () {
               dept:$('#bmbz1').val(),
             }
             gb(data)
+          }else{
+            alert("已审核完成，不能终止！");
           }
         }else{
           alert("已终止，不能再次终止！");
@@ -401,29 +405,34 @@ $(function () {
       if (djbh==""){
         alert("请先选择一行!")
       }else{
-        if(confirm("确定删除吗？")){
-          $.ajax({  
-            'url': ip+"reject/delete",   
-            'type': 'post',
-            'success':function(rs){
-              alert(rs)
-              table.ajax.reload();
-            },
-            'error':function(rs){
-              if(rs.status==401){
-                alert("请先登录")
-              }else if(rs.status==402){
-                alert("您没有该权限")
-              }else if(rs.status==500){
-                alert('网络故障，请刷新重试')
-              }
-            },
-            'data': {
-              name:name,
-              token:token,
-              djbh:djbh,
-            },
-          });
+        var rejDeptManager = $(".selected").children('td').eq(13).text();
+        if(""==rejDeptManager){
+          if(confirm("确定删除吗？")){
+            $.ajax({  
+              'url': ip+"reject/delete",   
+              'type': 'post',
+              'success':function(rs){
+                alert(rs)
+                table.ajax.reload();
+              },
+              'error':function(rs){
+                if(rs.status==401){
+                  alert("请先登录")
+                }else if(rs.status==402){
+                  alert("您没有该权限")
+                }else if(rs.status==500){
+                  alert('网络故障，请刷新重试')
+                }
+              },
+              'data': {
+                name:name,
+                token:token,
+                djbh:djbh,
+              },
+            });
+          }
+        }else{
+          alert("报废部门负责人已审核，不能删除！");
         }
       } 
     });
@@ -681,6 +690,7 @@ function reject(data){
     success:function(rs){
       alert(rs)
       $('#myModal1').modal('hide')
+      table.ajax.reload();
     }
   });
 }
@@ -701,6 +711,7 @@ function gb(data){
     success:function(rs){
       alert(rs)
       $('#myModal1').modal('hide')
+      table.ajax.reload();
     }
   });
 }
@@ -739,6 +750,7 @@ function plsh(data){
         alert(rs);
         $('#fgfzyj').val('');
         $('#myModal2').modal('hide')
+        table.ajax.reload();
       }
     });
   }
