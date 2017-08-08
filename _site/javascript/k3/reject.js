@@ -148,7 +148,7 @@ $(function () {
         case "模块生产二部":
             Dept = "MK";
             break;
-        case "器件生产一部":
+        case "器件生产部":
             Dept = "QJ";
             break;
         case "TO生产部":
@@ -822,8 +822,8 @@ function initComplete(){ //初始化表格
                             '<th style="width: 17%;">报废金额：</th>'+
                             '<th style="width: 28%;">开始时间：</th>'+
                             '<th style="width: 28%;">结束时间：</th>'+
-                            '<th style="width: 28%;">报废类别：</th>'+
-                            '<th style="width: 28%;">部门：</th>'+
+                            '<th style="width: 20%;">报废类别：</th>'+
+                            '<th style="width: 17%;">部门：</th>'+
                             // '<th style="width: 10%;"></th>'+
                           '</tr>'+
                           '<tr>'+
@@ -864,7 +864,7 @@ function initComplete(){ //初始化表格
                               '</select>'+
                             '</th>'+
                             '<th>'+
-                              '<select id="bfbmcx" name="bfbmcx" class="form-control" style="display:inline;width: 100px;height: 100%">'+
+                              '<select id="bfbmcx" name="bfbmcx" class="form-control" style="display:inline;width: 70px;height: 100%">'+
                                 '<option value="all"></option>'+
                                 '<option value="模块">模块</option>'+
                                 '<option value="器件">器件</option>'+

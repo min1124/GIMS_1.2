@@ -326,18 +326,18 @@ $(function(){
         var qty2 = 0
         var ghdw = td.eq(4).text();//订单类型
         var po_number = td.eq(5).text();
-        for(var i = 0; i < td.length/18; i++){
+        for(var i = 0; i < td.length/19; i++){
             // id = td.eq(i*14+0).text() +" " +id
             var num2 = 0
-            fnumber = td.eq(i*18+9).find('input')//td.eq(i*14+8).find('.fnumber').val() +" " +fnumber
+            fnumber = td.eq(i*19+9).find('input')//td.eq(i*14+8).find('.fnumber').val() +" " +fnumber
             for(var j = 0; j < fnumber.length/3; j++){
                 if(fnumber[0+j*3].checked==true){
-                    id[k] = td.eq(i*18+1).text() 
+                    id[k] = td.eq(i*19+1).text() 
                     k3fn[k] = fnumber[1+j*3].value
                     num[k] = (fnumber[2+j*3].value)
-                    qty[k] = td.eq(i*18+13).text()
+                    qty[k] = td.eq(i*19+13).text()
                     k++
-                    qty2 = parseInt(td.eq(i*18+13).text())
+                    qty2 = parseInt(td.eq(i*19+13).text())
                     var num1 = parseInt(fnumber[2+j*3].value)
                     num2 = num2 + num1
                 }
@@ -552,19 +552,19 @@ $(function(){
         var qty = new Array()//需求数量
         var qty2 = 0
         var num = new Array()
-        for(var i = 0; i < td.length/15; i++) {
+        for(var i = 0; i < td.length/16; i++) {
             // for (j = 0; j<)
             // fnumber = td.eq(i*15+7).find('.k3')[0].val() +" " +fnumber
             var num2 = 0
-            fnumber = td.eq(i*15+8).find('input')
+            fnumber = td.eq(i*16+8).find('input')
             for(var j = 0; j < fnumber.length/3; j++){
                 if(fnumber[0+j*3].checked==true){
-                    id[k] = td.eq(i*15+1).text() 
+                    id[k] = td.eq(i*16+1).text() 
                     k3fn[k] = (fnumber[1+j*3].value)
                     num[k] = (fnumber[2+j*3].value)
-                    qty[k] = td.eq(i*15+12).text()
+                    qty[k] = td.eq(i*16+12).text()
                     k++
-                    qty2 = parseInt(td.eq(i*15+12).text())
+                    qty2 = parseInt(td.eq(i*16+12).text())
                     var num1 = parseInt(fnumber[2+j*3].value)
                     num2 = num2 + num1
                     
