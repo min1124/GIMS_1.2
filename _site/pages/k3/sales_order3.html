@@ -2,9 +2,11 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
+    <!-- bootstrap不支持IE的兼容模式，因此加此行，在IE运行最新的渲染模式 -->
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title></title>
     <!-- Tell the browser to be responsive to screen width -->
+    <!-- 初始化移动浏览显示 宽度为设备的宽度，页面加载时，缩放比率为1，也就是不缩放 -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <!-- Bootstrap 3.3.5 -->
     <link rel="stylesheet" href="../../bootstrap/css/bootstrap.min.css">
@@ -31,6 +33,8 @@
     <link rel="stylesheet" href="../../style/dormit/dormit.css">
     <!-- fixedcolumn固定列css -->
     <link rel="stylesheet" href="../../plugins/datatables/extensions/FixedColumns/css/dataTables.fixedColumns.css">
+    <link rel="stylesheet" type="text/css" href="../../plugins/datatables/extensions/FixedHeader/css/dataTables.fixedHeader.css">
+    <link rel="stylesheet" type="text/css" href="../../plugins/datatables/extensions/ColReorder/css/dataTables.colReorder.css">
     <style>
       th, td { white-space: nowrap;}
 
@@ -38,8 +42,8 @@
     
     <!-- jQuery 2.1.4 -->
     <script src="../../plugins/jQuery/jquery-1.11.0.min.js"></script>
-
-
+    <!-- bootstrap模板为使IE6、7、8版本（IE9以下版本）浏览器兼容html5新增的标签，引入下面代码文件即可。 -->
+    <!-- bootstrap模板为使IE6、7、8版本（IE9以下版本）浏览器兼容css3样式，引入下面代码文件即可。 -->
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -74,6 +78,7 @@
                         <table id="example" class="table table-bordered " >
                             <thead>
                               <tr>
+                                  <th>下单日期</th>
                                   <th>ID</th>
                                   <th>上传日期</th>
                                   <th>采购模式</th>
@@ -83,12 +88,13 @@
                                   <th>客户产品编码</th>
                                   <th>K3代码/生成数量</th>
                                   <th>订单数量</th>
+                                  <th>出库数量</th>                                
                                   <th>已关联K3订单数量</th>
                                   <th>剩余关联K3订单数量</th>
                                   <th>需求日期</th>
                                   <th>任务令号</th>                       
-                                  <th>含税单价</th>
-                                  <th>下单日期</th>
+                                  <!--<th>含税单价</th>-->
+                                  <th>单价</th>                                  
                                   <!-- <th></th> -->
                               </tr>
                             </thead> 
@@ -142,6 +148,7 @@
                                 <th>不含税价格</th>
                                 <th>下单日期</th>
                                 <th>上传日期</th> -->
+                                <th>下单日期</th>
                                 <th>ID</th>
                                 <th>零星客户全称</th>
                                 <th>客户名称</th>
@@ -153,6 +160,7 @@
                                 <th>客户产品编码</th>
                                 <th>K3代码/生成数量</th>
                                 <th>订单数量</th>
+                                <th>出库数量</th>
                                 <th>已关联K3订单数量</th>
                                 <th>剩余关联K3订单数量</th>
                                 <th>需求日期</th>
@@ -160,7 +168,6 @@
                                 <th>价格</th>
                                 <th>正源型号</th>
                                 <th>上传日期</th>
-                                <th>下单日期</th>
                               </tr>
                             </thead>
                         </table>
@@ -376,6 +383,7 @@
                 <option value="VMI结算">VMI结算</option>
                 <option value="换货订单">换货订单</option>
                 <option value="现款销售">现款销售</option>
+                <option value="HUB补货">HUB补货</option>
                 <option value="HUB结算">HUB结算</option>
               </select>
             </div>
@@ -483,7 +491,7 @@
     <script src="../../javascript/dormit/staff_info.js"></script> 
     <!-- fixedcolumn固定列js -->
     <script src="../../plugins/datatables/extensions/FixedColumns/js/dataTables.fixedColumns.min.js"></script>
-
-
+    <script src="../../plugins/datatables/extensions/FixedHeader/js/dataTables.fixedHeader.min.js"></script>
+    <script src="../../plugins/datatables/extensions/ColReorder/js/dataTables.colReorder.min.js"></script>
 </body>
 </html>
