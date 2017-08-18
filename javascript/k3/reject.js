@@ -77,7 +77,7 @@ $(function () {
         "oLanguage":language, 
         "aoColumnDefs":[
             {
-              "aTargets" :　[17],//修改颜色的目标列
+              "aTargets" :　[24],//修改颜色的目标列
               //nTd是一个对象，所指的是目标单元格；
               //sData是指目标单元格中所对应的值；
               //iRow是指目标单元格在datatable中所在的行数；
@@ -771,7 +771,8 @@ function getFBillNo(){//获取table中所有的单据编号
   var table = document .getElementById ("example")
   var a = table.rows.length
   for (var i=1 ; i<a ; i++){
-    if((""==table.rows[i].cells[19].innerHTML) && (""!=table.rows[i].cells[18].innerHTML) && (""!=table.rows[i].cells[17].innerHTML) && (table.rows[i].cells[17].innerHTML<=3000)){
+    if((""==table.rows[i].cells[25].innerHTML) && (""!=table.rows[i].cells[23].innerHTML) 
+      && (""!=table.rows[i].cells[24].innerHTML) && (table.rows[i].cells[24].innerHTML<=3000)){
       total+=",'"+table.rows[i].cells[0].innerHTML+"'";
     }else{
       total=",error1";
