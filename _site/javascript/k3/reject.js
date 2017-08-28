@@ -463,7 +463,7 @@ $(function () {
       if("叶志农"!=name){
         alert("您没有批量审核权限！");
       }else{
-        var fbillno=getFBillNo();
+        var fbillno = getFBillNo();
         if (fbillno==""){
           alert("请先筛选")
         }
@@ -768,17 +768,18 @@ function gb(data){
 
 function getFBillNo(){//获取table中所有的单据编号
   var total = "";
-  var table = document .getElementById ("example")
-  var a = table.rows.length
-  for (var i=1 ; i<a ; i++){
-    if((""==table.rows[i].cells[25].innerHTML) && (""!=table.rows[i].cells[23].innerHTML) 
-      && (""!=table.rows[i].cells[24].innerHTML) && (table.rows[i].cells[24].innerHTML<=3000)){
-      total+=",'"+table.rows[i].cells[0].innerHTML+"'";
+  var datas = $('#example').DataTable().data();
+  datas.each(function (data,index) { 
+    var fgfzth = data['分管副总'];//分管副总
+    var cwfzrth = data['财务负责人'];//财务负责人
+    var bfjeth = data['报废金额'];//报废金额
+    if((!fgfzth || ""==fgfzth) && ""!=cwfzrth && ""!=bfjeth && (bfjeth<=3000)){
+      total+=",'"+data['单据编号']+"'";
     }else{
       total=",error1";
-      break;
+      return false;
     }
-  }
+  });
   return total.substring(1);
 }
 
