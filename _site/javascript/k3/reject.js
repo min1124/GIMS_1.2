@@ -77,7 +77,7 @@ $(function () {
         "oLanguage":language, 
         "aoColumnDefs":[
             {
-              "aTargets" :　[24],//修改颜色的目标列
+              "aTargets" :　[30],//修改颜色的目标列
               //nTd是一个对象，所指的是目标单元格；
               //sData是指目标单元格中所对应的值；
               //iRow是指目标单元格在datatable中所在的行数；
@@ -109,14 +109,22 @@ $(function () {
           { "data": "报废原因" },
           { "data": "不良现象代码" },
           { "data": "关闭标志" },
-          { "data": "报废部门负责人" },        
+          { "data": "申请时间" },
+          { "data": "报废部门负责人" },
+          { "data": "部门审核时间" },        
           { "data": "ME负责人" },
+          { "data": "ME审核时间" },
           { "data": "品质负责人" },
-          { "data": "生产管理负责人" },
+          { "data": "品质审核时间" },
+          { "data": "生管负责人" },
+          { "data": "生管审核时间" },
           { "data": "财务负责人" },
+          { "data": "财务审核时间" },
           { "data": "报废金额" },
           { "data": "分管副总" },
+          { "data": "分管副总审核时间" },
           { "data": "仓管员" },
+          { "data": "仓管员审核时间" },
       ]
 
     });
@@ -174,6 +182,27 @@ $(function () {
             break;
         case "管芯生产部":
             Dept = "GX";
+            break;
+        case "开发工程部":
+            Dept = "KF";
+            break;
+        case "公共研发部":
+            Dept = "GY";
+            break;
+        case "高速产品线":
+            Dept = "GS";
+            break;
+        case "数通产品线":
+            Dept = "ST";
+            break;
+        case "SFP产品线":
+            Dept = "SF";
+            break;
+        case "PON产品线":
+            Dept = "PO";
+            break;
+        case "SFP产品线":
+            Dept = "SF";
             break;
       }
       if (Dept==""){
@@ -296,7 +325,7 @@ $(function () {
               }    
             }
           }else if(ViseManager==""){
-            if("叶志农" == name){
+            if("黄晶" == name){
               var data={
                 name:name,
                 token:token,
@@ -459,27 +488,130 @@ $(function () {
       } 
     });
 
-    $(document).on("click","#plsh",function(){//批量审核按钮
-      if("叶志农"!=name){
-        alert("您没有批量审核权限！");
-      }else{
-        var fbillno = getFBillNo();
-        if (fbillno==""){
-          alert("请先筛选")
-        }
-        if(fbillno=="error1"){
-          alert("包含<单据状态>不为<待分管副总审批>或<报废金额>为<空>或<大于3000>的单据，请重新筛选！");
-        }
-      // else if(fgfzyj==""){
-      //   alert("请填写完整信息")
-      // }
-        else{
-          $('#myModal2').modal('show')
-        }
+    $(document).on("click","#sgPlsh",function(){//生管负责人批量审核按钮
+      var data={
+        name:name,
+        token:token,
       }
+      $.ajax({
+        url:ip+'reject/sgPlshQx',
+        type:"POST",
+        data:data,
+        error:function(rs){
+          if(rs.status==401){
+            alert("请先登录")
+          }else if(rs.status==402){
+            alert("您没有该权限")
+          }else if(rs.status==500){
+            alert('网络故障，请刷新重试')
+          }
+        },
+        success:function(rs){
+          if("0"==rs){
+            var fbillno = getFBillNoSg();
+            if (fbillno==""){
+              alert("请先筛选")
+            }else if(fbillno=="error1"){
+              alert("包含<单据状态>不为<待生管负责人审核>或<报废金额>为<空>或<大于3000>的单据，请重新筛选！");
+            }else{
+              $('#myModal3').modal('show')
+            }     
+          }
+        }
+      });
     });
 
-    $(document).on("click","#plshqr",function(){//批量审核确认按钮
+    $(document).on("click","#sgPlshqr",function(){//生管批量审核确认按钮
+      var sgyj=$('#sgyj').val();
+      var fbillno=getFBillNo();
+      var data={
+        name:name,
+        token:token,
+        sgyj:sgyj,
+        fbillno:fbillno,
+      }
+      sgPlsh(data);
+    });
+
+    $(document).on("click","#cwPlsh",function(){//财务负责人批量审核按钮
+      var data={
+        name:name,
+        token:token,
+      }
+      $.ajax({
+        url:ip+'reject/cwPlshQx',
+        type:"POST",
+        data:data,
+        error:function(rs){
+          if(rs.status==401){
+            alert("请先登录")
+          }else if(rs.status==402){
+            alert("您没有该权限")
+          }else if(rs.status==500){
+            alert('网络故障，请刷新重试')
+          }
+        },
+        success:function(rs){
+          if("0"==rs){
+            var fbillno = getFBillNoCw();
+            if (fbillno==""){
+              alert("请先筛选")
+            }else if(fbillno=="error1"){
+              alert("包含<单据状态>不为<待财务负责人审核>或<报废金额>为<空>或<大于3000>的单据，请重新筛选！");
+            }else{
+              $('#myModal4').modal('show')
+            }     
+          }
+        }
+      });
+    });
+
+    $(document).on("click","#cwPlshqr",function(){//财务批量审核确认按钮
+      var cwyj=$('#cwyj').val();
+      var fbillno=getFBillNo();
+      var data={
+        name:name,
+        token:token,
+        cwyj:cwyj,
+        fbillno:fbillno,
+      }
+      cwPlsh(data);
+    });
+
+    $(document).on("click","#plsh",function(){//分管副总批量审核按钮
+      var data={
+        name:name,
+        token:token,
+      }
+      $.ajax({
+        url:ip+'reject/fgfzPlshQx',
+        type:"POST",
+        data:data,
+        error:function(rs){
+          if(rs.status==401){
+            alert("请先登录")
+          }else if(rs.status==402){
+            alert("您没有该权限")
+          }else if(rs.status==500){
+            alert('网络故障，请刷新重试')
+          }
+        },
+        success:function(rs){
+          if("0"==rs){
+            var fbillno = getFBillNoFgfz();
+            if (fbillno==""){
+              alert("请先筛选")
+            }else if(fbillno=="error1"){
+              alert("包含<单据状态>不为<待分管副总审批>或<报废金额>为<空>或<大于3000>的单据，请重新筛选！");
+            }else{
+              $('#myModal2').modal('show')
+            }
+          }
+        }
+      });
+    });
+
+    $(document).on("click","#plshqr",function(){//分管副总批量审核确认按钮
       var fgfzyj=$('#fgfzyj').val();
       var fbillno=getFBillNo();
       var data={
@@ -620,76 +752,6 @@ $(function () {
         token: token,
         name: name,
       }
-      $.ajax({  
-          'url': ip+'reject/t_Rejection?sql='+a,   
-          'type': 'post',
-          'data': data,
-          "error" : function(rs) {
-            if(rs.status==401){
-              alert("请先登录")
-            }else if(rs.status==402){
-              alert("您没有该权限")
-            }
-          } ,
-          'success': function(rs){
-            $("#djlb1").val(rs.data1[0].单据类别)//
-            $("#sqr").val(rs.data1[0].制单人)//
-            $("#djbh1").val(rs.data1[0].单据编号)//
-            $("#rq1").val(rs.data1[0].日期)//
-            $("#cpmc1").val(rs.data1[0].产品名称)//
-            $("#cpdm1").val(rs.data1[0].产品代码)//
-            $("#cpl1").val(rs.data1[0].成品率)//
-            $("#zzdh1").val(rs.data1[0].制造单号)//
-            $("#zzsl1").val(rs.data1[0].制造单数量)//
-            $("#bflx1").val(rs.data1[0].报废类型)//
-            $("#bflb1").val(rs.data1[0].报废类别)//
-            $("#rksl1").val(rs.data1[0].入库数量)//
-            $("#bmbz1").val(rs.data1[0].部门)//
-            $("#fcloseflag").val(rs.data1[0].关闭标志)//
-            if (rs.data2.length>0){
-              $("#cwr").val(rs.data2[0].FinManager)//
-              $("#cw").val(rs.data2[0].FinManagerNote)//
-              $("#mer").val(rs.data2[0].MEManager)//
-              $("#me").val(rs.data2[0].MEManagerNote)//
-              $("#sgr").val(rs.data2[0].ProManager)//
-              $("#sg").val(rs.data2[0].ProManagerNote)//
-              $("#pzr").val(rs.data2[0].QltManager)//
-              $("#pz").val(rs.data2[0].QltManagerNote)//
-              $("#fgfzr").val(rs.data2[0].ViseManager)//
-              $("#fgfz").val(rs.data2[0].ViseManagerNote)//
-              $("#fzr").val(rs.data2[0].RejDeptManager)//
-              $("#bfje").val(rs.data2[0].RejAmount_1)//
-              if(""!=rs.data2[0].RejAmount_1){
-                bfjeYs = rs.data2[0].RejAmount_1;
-                if(bfjeYs>3000){
-                  $("#bfje").css("color","red");
-                }else{
-                  $("#bfje").css("color","green");
-                }
-              }
-              if (""!=name && "李永青"==name) {
-                $("#bfje").attr("disabled",false);
-              }else{
-                $("#bfje").attr("disabled",true);
-              }
-              $("#ckqr").val(rs.data2[0].WarehouseAdmin)//
-            }else{
-              $("#cwr").val("")//
-              $("#cw").val("")//
-              $("#mer").val("")//
-              $("#me").val("")//
-              $("#sgr").val("")//
-              $("#sg").val("")//
-              $("#pzr").val("")//
-              $("#pz").val("")//
-              $("#fgfzr").val("")//
-              $("#fgfz").val("")//
-              $("#fzr").val("")//
-              $("#bfje").val("")//
-              $("#ckqr").val("")
-            }
-          },
-        }); 
       $('#example2').DataTable({
         "bDestroy":true,
         "paging": false,
@@ -719,7 +781,159 @@ $(function () {
           { "data": "FRejKind" },
         ]
       });
-      $('#myModal1').modal('show')
+      $.ajax({  
+        'url': ip+'reject/t_Rejection?sql='+a,   
+        'type': 'post',
+        'data': data,
+        "error" : function(rs) {
+          if(rs.status==401){
+            alert("请先登录")
+          }else if(rs.status==402){
+            alert("您没有该权限")
+          }
+        } ,
+        'success': function(rs){
+          // if("pt" == $.trim(rs.data1[0].报废分类)){
+            $("#djlb1").val(rs.data1[0].单据类别)//
+            $("#sqr").val(rs.data1[0].制单人)//
+            $("#djbh1").val(rs.data1[0].单据编号)//
+            $("#rq1").val(rs.data1[0].日期)//
+            $("#cpmc1").val(rs.data1[0].产品名称)//
+            $("#cpdm1").val(rs.data1[0].产品代码)//
+            $("#cpl1").val(rs.data1[0].成品率)//
+            $("#zzdh1").val(rs.data1[0].制造单号)//
+            $("#zzsl1").val(rs.data1[0].制造单数量)//
+            $("#bflx1").val(rs.data1[0].报废类型)//
+            $("#bflb1").val(rs.data1[0].报废类别)//
+            $("#rksl1").val(rs.data1[0].入库数量)//
+            $("#bmbz1").val(rs.data1[0].部门)//
+            $("#fcloseflag").val(rs.data1[0].关闭标志)//
+            if(rs.data2.length>0){
+              $("#sqsj").val(rs.data2[0].RejDate)//
+              $("#cwr").val(rs.data2[0].FinManager)//
+              $("#cw").val(rs.data2[0].FinManagerNote)//
+              $("#cwsj").val(rs.data2[0].FinDate)
+              $("#mer").val(rs.data2[0].MEManager)//
+              $("#me").val(rs.data2[0].MEManagerNote)//
+              $("#mesj").val(rs.data2[0].MEDate)//
+              $("#sgr").val(rs.data2[0].ProManager)//
+              $("#sg").val(rs.data2[0].ProManagerNote)//
+              $("#sgsj").val(rs.data2[0].ProDate)//
+              $("#pzr").val(rs.data2[0].QltManager)//
+              $("#pz").val(rs.data2[0].QltManagerNote)//
+              $("#pzsj").val(rs.data2[0].QltDate)//
+              $("#fgfzr").val(rs.data2[0].ViseManager)//
+              $("#fgfz").val(rs.data2[0].ViseManagerNote)//
+              $("#fgfzsj").val(rs.data2[0].ViseDate)//
+              $("#fzr").val(rs.data2[0].RejDeptManager)//
+              $("#fzrsj").val(rs.data2[0].RejDeptDate)//
+              $("#bfje").val(rs.data2[0].RejAmount_1)//
+              if(""!=rs.data2[0].RejAmount_1){
+                bfjeYs = rs.data2[0].RejAmount_1;
+                if(bfjeYs>3000){
+                  $("#bfje").css("color","red");
+                }else{
+                  $("#bfje").css("color","green");
+                }
+              }
+              if (""!=name && "李永青"==name && "郑宇"==name) {
+                $("#bfje").attr("disabled",false);
+              }else{
+                $("#bfje").attr("disabled",true);
+              }
+              $("#ckqr").val(rs.data2[0].WarehouseAdmin)//
+              $("#ckqrsj").val(rs.data2[0].WarehouseDate)//
+            }else{
+              $("#sqsj").val("")//
+              $("#cwr").val("")//
+              $("#cw").val("")//
+              $("#cwsj").val("")
+              $("#mer").val("")//
+              $("#me").val("")//
+              $("#mesj").val("")//
+              $("#sgr").val("")//
+              $("#sg").val("")//
+              $("#sgsj").val("")//
+              $("#pzr").val("")//
+              $("#pz").val("")//
+              $("#pzsj").val("")//
+              $("#fgfzr").val("")//
+              $("#fgfz").val("")//
+              $("#fgfzsj").val("")//
+              $("#fzr").val("")//
+              $("#fzrsj").val("")//
+              $("#bfje").val("")//
+              $("#ckqr").val("")
+              $("#ckqrsj").val("")//
+            }
+            $('#myModal1').modal('show')
+          // }
+          // if("yf" == $.trim(rs.data1[0].报废分类)){
+          //   $("#djlbYf").val(rs.data1[0].单据类别)//
+          //   $("#sqrYf").val(rs.data1[0].制单人)//
+          //   $("#djbhYf").val(rs.data1[0].单据编号)//
+          //   $("#rqYf").val(rs.data1[0].日期)//
+          //   $("#cpmcYf").val(rs.data1[0].产品名称)//
+          //   $("#cpdmYf").val(rs.data1[0].产品代码)//
+          //   $("#cplYf").val(rs.data1[0].成品率)//
+          //   $("#zzdhYf").val(rs.data1[0].制造单号)//
+          //   $("#zzslYf").val(rs.data1[0].制造单数量)//
+          //   $("#bflxYf").val(rs.data1[0].报废类型)//
+          //   $("#bflbYf").val(rs.data1[0].报废类别)//
+          //   $("#rkslYf").val(rs.data1[0].入库数量)//
+          //   $("#bmbzYf").val(rs.data1[0].部门)//
+          //   $("#fcloseflagYf").val(rs.data1[0].关闭标志)//
+          //   if(rs.data2.length>0){
+          //     $("#sqsjYf").val(rs.data2[0].RejDate)//
+          //     $("#cwrYf").val(rs.data2[0].FinManager)//
+          //     $("#cwYf").val(rs.data2[0].FinManagerNote)//
+          //     $("#cwsjYf").val(rs.data2[0].FinDate)
+          //     $("#pzrYf").val(rs.data2[0].QltManager)//
+          //     $("#pzYf").val(rs.data2[0].QltManagerNote)//
+          //     $("#pzsjYf").val(rs.data2[0].QltDate)//
+          //     $("#fgfzrYf").val(rs.data2[0].ViseManager)//
+          //     $("#fgfzYf").val(rs.data2[0].ViseManagerNote)//
+          //     $("#fgfzsjYf").val(rs.data2[0].ViseDate)//
+          //     $("#fzrYf").val(rs.data2[0].RejDeptManager)//
+          //     $("#fzrsjYf").val(rs.data2[0].RejDeptDate)//
+          //     $("#bfjeYf").val(rs.data2[0].RejAmount_1)//
+          //     if(""!=rs.data2[0].RejAmount_1){
+          //       bfjeYsYf = rs.data2[0].RejAmount_1;
+          //       if(bfjeYsYf>3000){
+          //         $("#bfjeYf").css("color","red");
+          //       }else{
+          //         $("#bfjeYf").css("color","green");
+          //       }
+          //     }
+          //     if (""!=name && "李永青"==name && "郑宇"==name) {
+          //       $("#bfjeYf").attr("disabled",false);
+          //     }else{
+          //       $("#bfjeYf").attr("disabled",true);
+          //     }
+          //     $("#ckqrYf").val(rs.data2[0].WarehouseAdmin)//
+          //     $("#ckqrsjYf").val(rs.data2[0].WarehouseDate)//
+          //   }else{
+          //     $("#sqsjYf").val("")//
+          //     $("#cwrYf").val("")//
+          //     $("#cwYf").val("")//
+          //     $("#cwsjYf").val("")
+          //     $("#pzrYf").val("")//
+          //     $("#pzYf").val("")//
+          //     $("#pzsjYf").val("")//
+          //     $("#fgfzrYf").val("")//
+          //     $("#fgfzYf").val("")//
+          //     $("#fgfzsjYf").val("")//
+          //     $("#fzrYf").val("")//
+          //     $("#fzrsjYf").val("")//
+          //     $("#bfjeYf").val("")//
+          //     $("#ckqrYf").val("")
+          //     $("#ckqrsjYf").val("")//
+          //   }
+          //   $('#myModalYf').modal('show')
+          // }
+        },
+      }); 
+      
     });
 });
 
@@ -766,14 +980,14 @@ function gb(data){
   });
 }
 
-function getFBillNo(){//获取table中所有的单据编号
+function getFBillNoSg(){//获取table中所有的单据编号
   var total = "";
   var datas = $('#example').DataTable().data();
   datas.each(function (data,index) { 
-    var fgfzth = data['分管副总'];//分管副总
-    var cwfzrth = data['财务负责人'];//财务负责人
+    var sgfzrth = data['生管负责人'];//生管负责人
+    var pzfzrth = data['品质负责人'];//品质负责人
     var bfjeth = data['报废金额'];//报废金额
-    if((!fgfzth || ""==fgfzth) && ""!=cwfzrth && ""!=bfjeth && (bfjeth<=3000)){
+    if((!sgfzrth || ""==sgfzrth) && (pzfzrth && ""!=pzfzrth) && bfjeth && ""!=bfjeth && (bfjeth<=3000)){
       total+=",'"+data['单据编号']+"'";
     }else{
       total=",error1";
@@ -781,6 +995,101 @@ function getFBillNo(){//获取table中所有的单据编号
     }
   });
   return total.substring(1);
+}
+
+function getFBillNoCw(){//获取table中所有的单据编号
+  var total = "";
+  var datas = $('#example').DataTable().data();
+  datas.each(function (data,index) { 
+    var sgfzrth = data['生管负责人'];//生管负责人
+    var fgfzth = data['分管副总'];//分管副总
+    var bfjeth = data['报废金额'];//报废金额
+    if((!fgfzth || ""==fgfzth) && (sgfzrth && ""!=sgfzrth) && bfjeth && ""!=bfjeth && (bfjeth<=3000)){
+      total+=",'"+data['单据编号']+"'";
+    }else{
+      total=",error1";
+      return false;
+    }
+  });
+  return total.substring(1);
+}
+
+function getFBillNoFgfz(){//获取table中所有的单据编号
+  var total = "";
+  var datas = $('#example').DataTable().data();
+  datas.each(function (data,index) { 
+    var fgfzth = data['分管副总'];//分管副总
+    var cwfzrth = data['财务负责人'];//财务负责人
+    var bfjeth = data['报废金额'];//报废金额
+    if((!fgfzth || ""==fgfzth) && (cwfzrth && ""!=cwfzrth) && bfjeth && ""!=bfjeth && (bfjeth<=3000)){
+      total+=",'"+data['单据编号']+"'";
+    }else{
+      total=",error1";
+      return false;
+    }
+  });
+  return total.substring(1);
+}
+
+function getFBillNo(){//获取table中所有的单据编号
+  var total = "";
+  var datas = $('#example').DataTable().data();
+  datas.each(function (data,index) { 
+    if(data['单据编号'] && ""!=data['单据编号']){
+      total+=",'"+data['单据编号']+"'";
+    }
+  });
+  return total.substring(1);
+}
+
+function sgPlsh(data){
+  if(confirm("确定审核吗？")){
+    $.ajax({
+      url:ip+"reject/sgPlsh",
+      type:'post',
+      data:data,
+      error:function(rs){
+        if(rs.status==401){
+          alert("请先登录")
+        }else if(rs.status==402){
+          alert("您没有该权限")
+        }else{
+          alert("审核失败！")
+        }
+      },
+      success:function(rs){
+        alert(rs);
+        $('#sgyj').val('');
+        $('#myModal3').modal('hide')
+        table.ajax.reload();
+      }
+    });
+  }
+}
+
+function cwPlsh(data){
+  if(confirm("确定审核吗？")){
+    $.ajax({
+      url:ip+"reject/cwPlsh",
+      type:'post',
+      data:data,
+      error:function(rs){
+        if(rs.status==401){
+          alert("请先登录")
+        }else if(rs.status==402){
+          alert("您没有该权限")
+        }else{
+          alert("审核失败！")
+        }
+      },
+      success:function(rs){
+        alert(rs);
+        $('#cwyj').val('');
+        $('#myModal4').modal('hide')
+        table.ajax.reload();
+      }
+    });
+  }
 }
 
 function plsh(data){
@@ -883,7 +1192,9 @@ function initComplete(){ //初始化表格
                             '<th colspan="6">'+
                               '<button type="button" class="btn btn-default" id="add">增加</button>'+
                               '<button type="button" class="btn btn-default" id="delete">删除</button>'+
-                              '<button type="button" class="btn btn-default" id="plsh">批量审核</button>'+
+                              '<button type="button" class="btn btn-default" id="sgPlsh">生管批量审核</button>'+
+                              '<button type="button" class="btn btn-default" id="cwPlsh">财务批量审核</button>'+
+                              '<button type="button" class="btn btn-default" id="plsh">分管副总批量审核</button>'+
                             '</th>'+
                           '</tr>'+
                         '</thead>'+
